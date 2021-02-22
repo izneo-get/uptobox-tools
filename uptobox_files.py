@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-__version__ = "0.01.00"
+__version__ = "0.01.01"
 
 
 import requests
@@ -38,6 +38,10 @@ def uptobox_files(path='//'):
 
         res = json.loads(response.text)
 
+        if res['statusCode'] == 1:
+            print(f"[ERROR] {res['message']}: {res['data']}")
+            return
+
         for f in res['data']['files']:
             all_files.append(f)
 
@@ -48,6 +52,13 @@ def uptobox_files(path='//'):
 
 
 if __name__ == "__main__":
+    root_dir = "//"
+    if len(sys.argv) > 1:
+        root_dir = sys.argv[1]
+        if root_dir[0:2] != '//':
+            root_dir = '//' + root_dir
+
+
     token = ''
     # Lecture de la config.
     config = configparser.RawConfigParser()
@@ -67,7 +78,9 @@ if __name__ == "__main__":
         config.write(configfile)
 
     # Récupération de la liste des fichiers.
-    files = uptobox_files()
+    files = uptobox_files(path=root_dir)
+    if not files:
+        sys.exit()
     files.sort(key=lambda x: x['file_last_download'])
     print(f"file_last_download\tfile_code\tfile_name")
     for f in files:
