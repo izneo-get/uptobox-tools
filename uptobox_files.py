@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 __version__ = "0.02.00"
 
+"""
+Source : https://github.com/izneo-get/uptobox-tools
+"""
 
 import configparser
 import argparse
@@ -21,16 +24,16 @@ if __name__ == "__main__":
         metavar='N', 
         nargs='*',
         default=["//"],
-        help="Folders(s) to explore.",
+        help="Folders(s) to explore (default=\"//\").",
     )
     parser.add_argument(
         "--token", "-t", type=str, default="", help="API token."
     )
     parser.add_argument(
-        "--sort", "-s", type=str, choices=['name', 'created', 'size', 'downloads', 'last_download', 'folder'], default="last_download", help="Sort list by..."
+        "--fields", "-f", type=str, default="last_download,url,folder,name", help="Fields to display separated by coma without spaces (available: 'name', 'created', 'size', 'downloads', 'last_download', 'folder', 'url') (default=\"last_download,url,folder,name\")."
     )
     parser.add_argument(
-        "--fields", "-f", type=str, default="last_download,url,folder,name", help="Fields to display."
+        "--sort", "-s", type=str, choices=['name', 'created', 'size', 'downloads', 'last_download', 'folder'], default="last_download", help="Sort list by... (default=\"last_download\")"
     )
     parser.add_argument(
         "--output", "-o", type=str, default="", help="Output to file."
@@ -83,7 +86,7 @@ if __name__ == "__main__":
         fo = open(output_file, "w")
     print(header, file=fo)
     for f in all_files:
-        to_display = "\t".join([f['file_' + fld.strip()] for fld in fields_to_display.split(',')])
+        to_display = "\t".join([str(f['file_' + fld.strip()]) for fld in fields_to_display.split(',')])
         print(to_display, file=fo)
 
     if output_file:
