@@ -7,12 +7,12 @@ Permet d'avoir la liste des fichiers de son compte UpToBox.com, triés par date 
 ```
 usage: uptobox_files.py [-h] [--token TOKEN] [--sort {name,created,size,downloads,last_download,folder}]
                         [--fields FIELDS] [--output OUTPUT]
-                        [N ...]
+                        [FOLDER ...]
 
 Script to list files in your UpToBox account.
 
 positional arguments:
-  N                     Folders(s) to explore (default="//").
+  FOLDER                Folders(s) to explore (default="//").
 
 optional arguments:
   -h, --help            show this help message and exit

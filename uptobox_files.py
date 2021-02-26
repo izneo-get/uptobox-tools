@@ -21,7 +21,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "folders",
         type=str,
-        metavar='N', 
+        metavar='FOLDER', 
         nargs='*',
         default=["//"],
         help="Folders(s) to explore (default=\"//\").",
