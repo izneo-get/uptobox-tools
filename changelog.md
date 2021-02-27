@@ -2,6 +2,9 @@
 
 ## uptobox_files.py
 
+### Version 2.01 (2021-02-27)
+- [NEW] Ajout de l'option `--find-missing` qui permet de lister les fichiers manquants. 
+
 ### Version 2.00 (2021-02-26)
 - [NEW] Token en paramètre. 
 - [NEW] Possibilité de lister les fichiers de plusieurs répertoires dans la même requete. 
