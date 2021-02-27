@@ -99,3 +99,9 @@ python uptobox_files.py
 ```
 deactivate
 ```
+
+Si vous avez une erreur à cause d'une librairie SSL manquante, vous pouvez essayer de l'installer avec la commande :  
+```
+pip install pyopenssl
+```
+Si cela ne fonctionne pas, vous pouvez télécharger [OpenSSL pour Windows](http://gnuwin32.sourceforge.net/packages/openssl.htm). 
