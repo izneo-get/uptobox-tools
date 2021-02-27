@@ -73,3 +73,29 @@ python uptobox_files.py --token TOKEN_DU_COMPTE_B --find-missing "compte_A.txt" 
 Le script va d'abord interroger le compte A pour connaitre la liste des fichiers présents à la racine. Le résultat sera écrit dans le fichier `compte_A.txt`. 
 Le script va ensuite interroger le compte B. Tous les fichiers listés dans A qui ne sont pas à la racine de B seront alors affichés. 
 
+## Installation 
+### Prérequis
+- [Python 3.9+](https://www.python.org/downloads/windows/) (non testé avec les versions précédentes)
+- pip
+
+### Windows
+- En ligne de commande, on clone le repo : 
+```
+git clone https://github.com/izneo-get/uptobox-tools.git
+cd uptobox-tools
+```
+- (optionnel) On crée un environnement virtuel Python dédié : 
+```
+python -m venv env
+env\Scripts\activate
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+```
+- On peut exécuter le script :
+```
+python uptobox_files.py
+```
+- (optionnel) On quitte le l'environnement virtuel : 
+```
+deactivate
+```

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-__version__ = "0.02.01"
+__version__ = "02.02"
 
 """
 Source : https://github.com/izneo-get/uptobox-tools
@@ -64,12 +64,19 @@ if __name__ == "__main__":
             )
         if not token:
             token = input("Uptobox token: ")
-            # Ecriture de la config.
-            config["DEFAULT"]["token"] = token
-            with open(config_file, "w") as configfile:
-                config.write(configfile)
+            utb = UpToBox(token)
+            user = utb.uptobox_user()
+            if user['statusCode'] == 0:
+                # Ecriture de la config.
+                config["DEFAULT"]["token"] = token
+                with open(config_file, "w") as configfile:
+                    config.write(configfile)
 
     utb = UpToBox(token)
+    user = utb.uptobox_user()
+    if user['statusCode'] != 0:
+        print("[ERROR] Invalid token.")
+        sys.exit()
 
     # Find-missing
     files_to_search = []
