@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-__version__ = "02.02"
+__version__ = "02.03"
 
 """
 Source : https://github.com/izneo-get/uptobox-tools
@@ -88,14 +88,14 @@ if __name__ == "__main__":
         if not os.path.isfile(find_missing):
             print(f"[ERROR] File \"{find_missing}\" doesn't exist.")
             sys.exit()
-        input_file = csv.DictReader(open(find_missing, "r"), delimiter='\t')
+        input_file = csv.DictReader(open(find_missing, "r", encoding="utf-8"), delimiter='\t')
         if 'file_name' in input_file.fieldnames:
             # Fichier au format attendu.
             for line in input_file:
                 files_to_search.append(line['file_name'])
         else:
             # Fichier plat.
-            files_to_search = list(map(lambda s: s.strip(), open(find_missing, "r").readlines()))
+            files_to_search = list(map(lambda s: s.strip(), open(find_missing, "r", encoding="utf-8").readlines()))
 
         if not files_to_search:
             print("[ERROR] Can't find a list of file names in \"{find_missing}\"...")
@@ -121,7 +121,7 @@ if __name__ == "__main__":
     
     fo = None
     if output_file:
-        fo = open(output_file, "w")
+        fo = open(output_file, "w", encoding="utf-8")
 
     if files_to_search:
         # On veut juste voir les fichiers qui manquent.
