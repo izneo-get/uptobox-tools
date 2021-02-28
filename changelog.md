@@ -2,7 +2,7 @@
 
 ## uptobox_files.py
 
-### Version 2.03 (2021-02-28)
+### Version 2.04 (2021-02-28)
 - [NEW] Ajout de l'option `--recursive` qui permet d'explorer les sous-répertoires récursivement. 
 
 ### Version 2.03 (2021-02-27)
