@@ -6,8 +6,8 @@ Permet d'avoir la liste des fichiers de son compte UpToBox.com, triés par date 
 ### Utilisation
 ```
 usage: uptobox_files.py [-h] [--token TOKEN] [--fields FIELDS]
-                        [--sort {name,created,size,downloads,last_download,folder}] [--find-missing REFERENCE_FILE]
-                        [--output OUTPUT]
+                        [--sort {name,created,size,downloads,last_download,folder}] [--recursive]
+                        [--find-missing REFERENCE_FILE] [--output OUTPUT_FILE]
                         [FOLDER ...]
 
 Script to list files in your UpToBox account.
@@ -24,6 +24,7 @@ optional arguments:
                         'downloads', 'last_download', 'folder', 'url') (default="last_download,url,folder,name").
   --sort {name,created,size,downloads,last_download,folder}, -s {name,created,size,downloads,last_download,folder}
                         Sort list by... (default="last_download")
+  --recursive, -r       Explore folders recursively.
   --find-missing REFERENCE_FILE
                         Find missing distant files compared to a reference list of files.
   --output OUTPUT_FILE, -o OUTPUT_FILE
@@ -41,6 +42,9 @@ Si l'option n'est pas renseignée, les champs utilisés seront : `"last_download
 L'option `--sort` (optionnelle) permet de définir dans quel ordre les fichiers doivent être triés. 
 La valeur doit être parmi : `name`, `created`, `size`, `downloads`, `last_download`, `folder`. 
 Si l'option n'est pas renseignée, le champ utilisé sera : `last_download` (les fichiers dont la date de dernier téléchargement est la plus ancienne seront affichés en premier). 
+
+L'option `--recursive` (optionnelle) permet d'explorer les sous-répertoires de manière récursive. 
+Si l'option n'est pas renseignée, les sous-répertoires ne seront pas explorés. 
 
 L'option `--find-missing` (optionnelle) permet de prendre en entrée un fichier contenant une liste de noms de fichiers. Le script listera tous les fichiers de cette liste qui ne sont pas présents sur le compte UpToBox dans les répertoires requêtés. 
 Le fichier peut soit être une liste simple de noms, soit une liste générée avec l'option `--output OUTPUT_FILE`. 
@@ -65,6 +69,11 @@ python uptobox_files.py --fields "last_download,url,folder,name" --sort "last_do
 python uptobox_files.py --fields "name" --sort "name" --output "out.txt" "//Folder 1" "//Folder 2"
 ```
 
+##### Lister tous les fichiers du compte, triés par répertoire : 
+```
+python uptobox_files.py --recursive --sort folder
+```
+
 ##### Trouver les fichiers qui sont sur un compte A mais pas sur un compte B : 
 ```
 python uptobox_files.py --token TOKEN_DU_COMPTE_A --output "compte_A.txt" "//"
@@ -72,7 +81,8 @@ python uptobox_files.py --token TOKEN_DU_COMPTE_B --find-missing "compte_A.txt" 
 ```
 Le script va d'abord interroger le compte A pour connaitre la liste des fichiers présents à la racine. Le résultat sera écrit dans le fichier `compte_A.txt`. 
 Le script va ensuite interroger le compte B. Tous les fichiers listés dans A qui ne sont pas à la racine de B seront alors affichés. 
-
+ 
+ 
 ## Installation 
 ### Prérequis
 - [Python 3.9+](https://www.python.org/downloads/windows/) (non testé avec les versions précédentes)

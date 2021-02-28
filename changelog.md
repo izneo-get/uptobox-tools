@@ -2,6 +2,9 @@
 
 ## uptobox_files.py
 
+### Version 2.03 (2021-02-28)
+- [NEW] Ajout de l'option `--recursive` qui permet d'explorer les sous-répertoires récursivement. 
+
 ### Version 2.03 (2021-02-27)
 - [NEW] Ajout de l'option `--find-missing` qui permet de lister les fichiers manquants. 
 - [CHANGE] Sauvegarde du token uniquement s'il est valide. 

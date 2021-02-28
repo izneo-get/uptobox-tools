@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-__version__ = "02.03"
+__version__ = "02.04"
 
 """
 Source : https://github.com/izneo-get/uptobox-tools
@@ -12,9 +12,27 @@ import sys
 import os
 from uptobox_class import UpToBox
 import csv
+import requests
+
+
+def check_version():
+    latest_version_url = 'https://raw.githubusercontent.com/izneo-get/uptobox-tools/master/VERSION'
+    res = requests.get(latest_version_url)
+    if res.status_code != 200:
+        print(f"Version {__version__} (impossible to check official version)")
+    else:
+        latest_version = res.text.strip()
+        if latest_version == __version__:
+            print(f"Version {__version__} (official version)")
+        else:
+            print(f"Version {__version__} (official version is different: {latest_version})")
+            print("Please check https://github.com/izneo-get/uptobox-tools/releases/latest")
+    print()
 
 
 if __name__ == "__main__":
+    check_version()
+
     # Parse des arguments passés en ligne de commande.
     parser = argparse.ArgumentParser(
         description="""Script to list files in your UpToBox account."""
@@ -37,6 +55,9 @@ if __name__ == "__main__":
         "--sort", "-s", type=str, choices=['name', 'created', 'size', 'downloads', 'last_download', 'folder'], default="", help="Sort list by... (default=\"last_download\")"
     )
     parser.add_argument(
+        "--recursive", "-r", default=False, action="store_true", help="Explore folders recursively."
+    )
+    parser.add_argument(
         "--find-missing", type=str, metavar="REFERENCE_FILE", default="", help="Find missing distant files compared to a reference list of files."
     )
     parser.add_argument(
@@ -50,8 +71,10 @@ if __name__ == "__main__":
     token = args.token
     sort_by = args.sort
     fields_to_display = args.fields
+    recursive = args.recursive
     find_missing = args.find_missing
     output_file = args.output
+
     if not token:
         # Lecture de la config.
         config = configparser.RawConfigParser()
@@ -109,15 +132,14 @@ if __name__ == "__main__":
         sort_by = "last_download"
     
     # Récupération de la liste des fichiers.
-    all_files = []
+    all_files = {}
     all_names = []
     for f in folders:
-        files = utb.uptobox_files(path=f)
+        files = utb.uptobox_files(path=f, recursive=recursive)
+        all_files.update(files)
         for file in files:
-            file['file_folder'] = f
-            file['file_url'] = f"{utb.url_base}{file['file_code']}"
-            all_files.append(file)
-            all_names.append(file['file_name'])
+            # all_files[files(files[file])
+            all_names.append(files[file]['file_name'])
     
     fo = None
     if output_file:
@@ -134,13 +156,14 @@ if __name__ == "__main__":
 
     if not all_files:
         sys.exit()
-    all_files.sort(key=lambda x: x['file_' + sort_by])
+    # all_files.sort(key=lambda x: x['file_' + sort_by])
 
     header = "\t".join(['file_' + fld.strip() for fld in fields_to_display.split(',')])
 
-
+    
     print(header, file=fo)
-    for f in all_files:
+    # for f in all_files:
+    for _, f in sorted(all_files.items(), key=lambda item: item[1]['file_' + sort_by]):
         to_display = "\t".join([str(f['file_' + fld.strip()]) for fld in fields_to_display.split(',')])
         print(to_display, file=fo)
 
