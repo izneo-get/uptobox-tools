@@ -98,6 +98,9 @@ cd uptobox-tools
 ```
 python -m venv env
 env\Scripts\activate
+```
+- On installe les dépendances : 
+```
 python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
