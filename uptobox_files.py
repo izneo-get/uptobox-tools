@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-__version__ = "02.04"
+__version__ = "02.05"
 
 """
 Source : https://github.com/izneo-get/uptobox-tools
@@ -58,7 +58,7 @@ if __name__ == "__main__":
         "--recursive", "-r", default=False, action="store_true", help="Explore folders recursively."
     )
     parser.add_argument(
-        "--find-missing", type=str, metavar="REFERENCE_FILE", default="", help="Find missing distant files compared to a reference list of files."
+        "--find-missing", "-m", type=str, metavar="REFERENCE_FILE", default="", help="Find missing distant files compared to a reference list of files."
     )
     parser.add_argument(
         "--output", "-o", type=str, metavar="OUTPUT_FILE", default="", help="Output to a file."
@@ -102,7 +102,7 @@ if __name__ == "__main__":
         sys.exit()
 
     # Find-missing
-    files_to_search = []
+    files_to_search = {}
     if find_missing:
         if fields_to_display:
             print("[WARNING] While \"--find-missing\", \"--fields\" will be ignored...")
@@ -115,10 +115,10 @@ if __name__ == "__main__":
         if 'file_name' in input_file.fieldnames:
             # Fichier au format attendu.
             for line in input_file:
-                files_to_search.append(line['file_name'])
+                files_to_search[line['file_name']] = line
         else:
             # Fichier plat.
-            files_to_search = list(map(lambda s: s.strip(), open(find_missing, "r", encoding="utf-8").readlines()))
+            files_to_search = {l: l for l in list(map(lambda s: s.strip(), open(find_missing, "r", encoding="utf-8").readlines()))}
 
         if not files_to_search:
             print("[ERROR] Can't find a list of file names in \"{find_missing}\"...")
@@ -138,7 +138,6 @@ if __name__ == "__main__":
         files = utb.uptobox_files(path=f, recursive=recursive)
         all_files.update(files)
         for file in files:
-            # all_files[files(files[file])
             all_names.append(files[file]['file_name'])
     
     fo = None
@@ -149,20 +148,23 @@ if __name__ == "__main__":
         # On veut juste voir les fichiers qui manquent.
         missing = list(set(files_to_search) - set(all_names))
         print("Missing files:", file=fo)
+        if len(missing) > 0 and 'file_name' in input_file.fieldnames:
+            print("\t".join(input_file.fieldnames), file=fo)
         for m in missing:
-            print(m)
+            line = m
+            if 'file_name' in input_file.fieldnames:
+                line = "\t".join([files_to_search[m][k] for k in input_file.fieldnames])
+            print(line, file=fo)
         print(f"Total: {len(missing)}", file=fo)
         sys.exit()
 
     if not all_files:
         sys.exit()
-    # all_files.sort(key=lambda x: x['file_' + sort_by])
 
     header = "\t".join(['file_' + fld.strip() for fld in fields_to_display.split(',')])
 
     
     print(header, file=fo)
-    # for f in all_files:
     for _, f in sorted(all_files.items(), key=lambda item: item[1]['file_' + sort_by]):
         to_display = "\t".join([str(f['file_' + fld.strip()]) for fld in fields_to_display.split(',')])
         print(to_display, file=fo)

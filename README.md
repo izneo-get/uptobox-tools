@@ -47,7 +47,8 @@ L'option `--recursive` (optionnelle) permet d'explorer les sous-répertoires de 
 Si l'option n'est pas renseignée, les sous-répertoires ne seront pas explorés. 
 
 L'option `--find-missing` (optionnelle) permet de prendre en entrée un fichier contenant une liste de noms de fichiers. Le script listera tous les fichiers de cette liste qui ne sont pas présents sur le compte UpToBox dans les répertoires requêtés. 
-Le fichier peut soit être une liste simple de noms, soit une liste générée avec l'option `--output OUTPUT_FILE`. 
+Le fichier peut soit être une liste simple de noms, soit une liste générée avec l'option `--output OUTPUT_FILE`. Le fichier doit être au format UTF-8 si jamais il y a des caractères accentués ou spéciaux. 
+Dans le cas où le fichier passé contient plusieurs champs, tous ces champs seront affichés en sortie en cas de fichier manquant. 
 Cette option est incompatible avec les options `--fields` et `--sort`. 
 
 L'option `--output` (optionnelle) permet d'enregistrer le résultat dans un fichier, au lieu de la sortie standard. 
