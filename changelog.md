@@ -2,10 +2,10 @@
 
 ## uptobox_files.py
 
-### Version 2.04 (2021-03-02)
+### Version 2.05 (2021-03-02)
 - [CHANGE] L'option `--find-missing` retourne tous les champs du fichier de référence (si disponibles) et non pas seulement le nom de fichier. 
 
-- ### Version 2.04 (2021-02-28)
+### Version 2.04 (2021-02-28)
 - [NEW] Ajout de l'option `--recursive` qui permet d'explorer les sous-répertoires récursivement. 
 
 ### Version 2.03 (2021-02-27)
